@@ -1,0 +1,4 @@
+django~=3.0.0
+pillow~=9.3.0
+djangorestframework
+django-cors-headers
