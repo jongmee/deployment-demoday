@@ -3,7 +3,8 @@ from restaurants.models import Restaurant
 
 class Sale(models.Model):
     def __str__(self):
-        return self.sale_price
+        finish_date = str(self.end_date)
+        return finish_date
 
     sale_price = models.IntegerField()
     start_date = models.DateField()

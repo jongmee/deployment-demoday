@@ -1,14 +1,17 @@
 from django.shortcuts import render
 from .models import Menu
 from .serializers import MenuSerializer
-from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.viewsets import ModelViewSet
+from datetime import datetime
+from django.utils.dateformat import DateFormat
 
 import random
 
-class MenuListAPIView(ListAPIView):
+
+class MenuViewSet(ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
@@ -18,14 +21,25 @@ class MenuListAPIView(ListAPIView):
         return qs
 
 
-# class RandomMenuListAPIView(ListAPIView):
-#     queryset = Menu.objects.all()
-#     serializer_class = MenuSerializer
+class AllMenuViewSet(ModelViewSet):
+    queryset = Menu.objects.all()
+    serializer_class = MenuSerializer
 
-#     def get_queryset(self):
-#         qs = super().get_queryset()
-#         print(type(qs))
-#         return qs
+
+class SaleMenuViewSet(ModelViewSet):
+    queryset = Menu.objects.exclude(sale=None)
+    serializer_class = MenuSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        today = datetime.now().date()
+        for query in qs:
+            if today < query.sale.start_date:
+                qs = qs.exclude(sale=query.sale)
+            elif today > query.sale.end_date:
+                query.delete()
+        return qs
+
 
 # @api_view(["GET"])
 # def random_menu(request):
