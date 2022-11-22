@@ -1,14 +1,9 @@
 from django.shortcuts import render
 from .models import Menu
 from .serializers import MenuSerializer
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
 from datetime import datetime
-from django.utils.dateformat import DateFormat
-
-import random
 
 
 class MenuViewSet(ModelViewSet):
