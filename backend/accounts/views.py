@@ -5,8 +5,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 # from rest_framework.generics import CreateAPIView
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 
+User=get_user_model()
 
 # class SignupView(CreateAPIView):
 #     model = get_user_model()
@@ -35,6 +36,10 @@ class RegisterAPIView(APIView):
             res.set_cookie("refresh", refresh_token, httponly=True)
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request): #디버깅용
+        re = User.objects.all()
+        re2 = RegisterSerializer(re, many=True)
+        return Response(re2.data)
 
 class LoginView(APIView):
     def post(self, request):
@@ -60,3 +65,7 @@ class LoginView(APIView):
             return res
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request): #디버깅용
+        re = User.objects.all()
+        re2 = UserSerializer(re, many=True)
+        return Response(re2.data)

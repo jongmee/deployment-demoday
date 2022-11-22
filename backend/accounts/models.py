@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 
 class User(AbstractUser): # username, password, email 은 기본 제공됨
     def __str__(self):
-        return self.nickname
+        return self.username 
     phone_number = models.CharField(
         max_length=13,
         blank=True,
