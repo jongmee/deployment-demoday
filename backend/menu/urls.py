@@ -9,4 +9,5 @@ router.register(r'sale', views.SaleMenuViewSet, 'sale')
 urlpatterns = [
     path("", include(router.urls)),
     path("allsale/", views.SaleListAPIView.as_view()),
+    path("mymenu/", views.show_mymenu),
 ]

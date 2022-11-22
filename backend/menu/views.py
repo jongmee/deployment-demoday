@@ -4,6 +4,11 @@ from .serializers import MenuSerializer, SaleSerializer
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from datetime import datetime
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class SaleListAPIView(ListAPIView):
     queryset = Sale.objects.all()
@@ -39,18 +44,9 @@ class SaleMenuViewSet(ModelViewSet):
         return qs
 
 
-# @api_view(["GET"])
-# def random_menu(request):
-#     random_list = []
-#     querys = Menu.objects.all()
-#     querys = list(querys)
-#     # print(querys)
-#     for i in range(3):
-#         random_num = random.randrange(0, len(querys))
-#         random_list.append(querys[random_num])
-#         del querys[random_num]
-
-#     print(random_list)
-
-
-#     return Response(status.HTTP_204_NO_CONTENT)
+@api_view(["GET"])
+def show_mymenu(request):
+     user = request.user
+     my_menu = user.my_menu.all()
+     serializer = MenuSerializer(my_menu, many=True)
+     return Response(serializer.data)
