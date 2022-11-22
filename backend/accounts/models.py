@@ -1,14 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 
-# Create your models here.
 
-class Account(models.Model):
+class User(AbstractUser): # username, password, email 은 기본 제공됨
     def __str__(self):
-        user_name = str(self.name)
-        return user_name
-
-    phone_number = models.IntegerField
-    email = models.EmailField(max_length=30)
-    id = models.CharField(max_length=20,primary_key=True)
-    password = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
+        return self.nickname
+    phone_number = models.CharField(
+        max_length=13,
+        blank=True,
+        validators=[RegexValidator(r"^010-?[1-9]\d{3}-?\d{4}$")],
+    )
+    nickname = models.CharField(max_length=20)

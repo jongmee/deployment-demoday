@@ -1,12 +1,8 @@
-from .models import Account
-from .serializers import AccountSerializer
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from .serializers import SignupSerializer
+from rest_framework.generics import CreateAPIView
+from django.contrib.auth import get_user_model
 
 
-import random
-
-
-class AccountViewSet(ModelViewSet):
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+class SignupView(CreateAPIView):
+    model = get_user_model()
+    serializer_class = SignupSerializer
