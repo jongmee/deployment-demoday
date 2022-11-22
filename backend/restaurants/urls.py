@@ -11,5 +11,4 @@ urlpatterns = [
     path("", include(router.urls)),
     path("type/", views.TypeCategoryViewSet.as_view()),
     path("locationtype/", views.LocationCategoryViewSet.as_view()),
-    path("mystore/", views.show_mystore),
 ]
