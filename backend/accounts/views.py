@@ -4,8 +4,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
-# from rest_framework.generics import CreateAPIView
 from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
+from restaurants.models import Restaurant
+from menu.models import Menu
+from rest_framework.generics import get_object_or_404
 
 User=get_user_model()
 
@@ -69,3 +72,17 @@ class LoginView(APIView):
         re = User.objects.all()
         re2 = UserSerializer(re, many=True)
         return Response(re2.data)
+
+@api_view(["POST"])
+def add_mymenu(request):
+    menu_name = request.data["menu_name"]
+    menu = get_object_or_404(Menu, menu_name=menu_name)
+    request.user.my_menu.add(menu)
+    return Response(status.HTTP_204_NO_CONTENT)
+
+@api_view(["POST"])
+def add_mystore(request):
+    store_name = request.data["store_name"]
+    store = get_object_or_404(Restaurant, store_name=store_name)
+    request.user.my_store.add(store)
+    return Response(status.HTTP_204_NO_CONTENT)
