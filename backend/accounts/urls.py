@@ -6,5 +6,9 @@ from . import views
 # router.register("", views.AccountViewSet)
 
 urlpatterns = [
-    path("signup/", views.SignupView.as_view(), name="signup"),
+    # path("signup/", views.SignupView.as_view(), name="signup"),
+    
+    path("register/",views.RegisterAPIView.as_view()),
+    path("login/",views.LoginView.as_view()),
+    # path("logout/",views.LogoutView.as_view()),
 ]

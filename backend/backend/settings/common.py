@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from os.path import abspath, dirname, join
-
+from datetime import *
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
 
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third apps
     'rest_framework',
+    # 'rest_framework_jwt',
+    'rest_framework_simplejwt',
     'corsheaders',
     # local apps
     'accounts',
@@ -48,6 +50,24 @@ INSTALLED_APPS = [
     'menu',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=3650),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3650),
+    'SIGNING_KEY': 'SECRET',
+    'ALGORITHM': 'HS256',
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -93,7 +113,7 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4. 1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
