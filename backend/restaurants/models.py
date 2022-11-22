@@ -3,12 +3,12 @@ from django.db import models
 class TypeCategory(models.Model):
     def __str__(self):
         return self.name
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, primary_key=True)
 
 class LocationCategory(models.Model):
     def __str__(self):
         return self.name
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, primary_key=True)
 
 class Restaurant(models.Model):
     def __str__(self):
