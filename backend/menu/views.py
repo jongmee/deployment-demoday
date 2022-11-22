@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from .models import Menu
-from .serializers import MenuSerializer
-from rest_framework.decorators import api_view
+from .models import Menu, Sale
+from .serializers import MenuSerializer, SaleSerializer
+from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from datetime import datetime
 
-
+class SaleListAPIView(ListAPIView):
+    queryset = Sale.objects.all()
+    serializer_class = SaleSerializer
+    
 class MenuViewSet(ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
