@@ -11,6 +11,7 @@ from menu.models import Menu
 from rest_framework.generics import get_object_or_404
 from menu.serializers import MenuSerializer
 from restaurants.serializers import RestaurantSerializer
+import jwt
 
 User = get_user_model()
 
@@ -94,11 +95,17 @@ class LoginView(APIView):
         return response
 
 
+
 @api_view(["POST"])
 def add_mymenu(request):
     menu_name = request.data["menu_name"]
     menu = get_object_or_404(Menu, menu_name=menu_name)
-    request.user.my_menu.add(menu)
+    
+    token = request.headers.get("Authorization").split(" ")[1]
+    user_id = jwt.decode(token, "SECRET", algorithms=["HS256"])['user_id']
+    user = User.objects.filter(id=user_id).first()
+    
+    user.my_menu.add(menu)
     return Response(status.HTTP_204_NO_CONTENT)
 
 
@@ -106,19 +113,34 @@ def add_mymenu(request):
 def add_mystore(request):
     store_name = request.data["store_name"]
     store = get_object_or_404(Restaurant, store_name=store_name)
-    request.user.my_store.add(store)
+    
+    token = request.headers.get("Authorization").split(" ")[1]
+    user_id = jwt.decode(token, "SECRET", algorithms=["HS256"])['user_id']
+    user = User.objects.filter(id=user_id).first()
+    
+    user.my_store.add(store)
     return Response(status.HTTP_204_NO_CONTENT)
 
 @api_view(["GET"])
 def show_mymenu(request):
-     user = request.user
+     # 발급해준 토큰이 request 형태로 들어온다, 그것을 token에 담아주고,
+     token = request.headers.get("Authorization").split(" ")[1]
+     # jwt decoder를 통해서 토큰에 담긴 정보를 가져오는데, 우리가 필요한건 유저 정보니까 User_id만 가져온다.
+     user_id = jwt.decode(token, "SECRET", algorithms=["HS256"])['user_id']
+     # user_id(pk)를 통해서 유저 객체를 찾는다.
+     user = User.objects.filter(id=user_id).first()
      my_menu = user.my_menu.all()
      serializer = MenuSerializer(my_menu, many=True)
      return Response(serializer.data)
 
 @api_view(["GET"])
 def show_mystore(request):
-     user = request.user
+     # 발급해준 토큰이 request 형태로 들어온다, 그것을 token에 담아주고,
+     token = request.headers.get("Authorization").split(" ")[1]
+     # jwt decoder를 통해서 토큰에 담긴 정보를 가져오는데, 우리가 필요한건 유저 정보니까 User_id만 가져온다.
+     user_id = jwt.decode(token, "SECRET", algorithms=["HS256"])['user_id']
+     # user_id(pk)를 통해서 유저 객체를 찾는다.
+     user = User.objects.filter(id=user_id).first()
      my_stores = user.my_store.all()
      serializer = RestaurantSerializer(my_stores, many=True)
      return Response(serializer.data)
