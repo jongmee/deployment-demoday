@@ -9,6 +9,8 @@ from rest_framework.decorators import api_view
 from restaurants.models import Restaurant
 from menu.models import Menu
 from rest_framework.generics import get_object_or_404
+from menu.serializers import MenuSerializer
+from restaurants.serializers import RestaurantSerializer
 
 User = get_user_model()
 
@@ -106,3 +108,17 @@ def add_mystore(request):
     store = get_object_or_404(Restaurant, store_name=store_name)
     request.user.my_store.add(store)
     return Response(status.HTTP_204_NO_CONTENT)
+
+@api_view(["GET"])
+def show_mymenu(request):
+     user = request.user
+     my_menu = user.my_menu.all()
+     serializer = MenuSerializer(my_menu, many=True)
+     return Response(serializer.data)
+
+@api_view(["GET"])
+def show_mystore(request):
+     user = request.user
+     my_stores = user.my_store.all()
+     serializer = RestaurantSerializer(my_stores, many=True)
+     return Response(serializer.data)
