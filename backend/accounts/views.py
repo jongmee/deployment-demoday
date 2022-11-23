@@ -1,7 +1,7 @@
 from .serializers import *
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView 
+from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
@@ -10,11 +10,12 @@ from restaurants.models import Restaurant
 from menu.models import Menu
 from rest_framework.generics import get_object_or_404
 
-User=get_user_model()
+User = get_user_model()
 
 # class SignupView(CreateAPIView):
 #     model = get_user_model()
 #     serializer_class = SignupSerializer
+
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -39,15 +40,17 @@ class RegisterAPIView(APIView):
             res.set_cookie("refresh", refresh_token, httponly=True)
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    def get(self, request): #디버깅용
+
+    def get(self, request):  # 디버깅용
         re = User.objects.all()
         re2 = RegisterSerializer(re, many=True)
         return Response(re2.data)
 
+
 class LoginView(APIView):
     def post(self, request):
         user = authenticate(
-            User_name=request.data.get("nickname"), password=request.data.get("password")
+            username=request.data.get("username"), password=request.data.get("password")
         )
         if user is not None:
             serializer = UserSerializer(user)
@@ -67,11 +70,27 @@ class LoginView(APIView):
             )
             return res
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-    def get(self, request): #디버깅용
+            return Response(
+                {
+                    "user": request.data.get('username'),
+                    "message": "login failed",
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):  # 디버깅용
         re = User.objects.all()
         re2 = UserSerializer(re, many=True)
         return Response(re2.data)
+    # 로그아웃
+
+    def delete(self, request):
+        # 쿠키에 저장된 토큰 삭제 => 로그아웃 처리
+        response = Response({
+            "message": "Logout success"
+        }, status=status.HTTP_202_ACCEPTED)
+        response.delete_cookie("access")
+        response.delete_cookie("refresh")
+        return response
+
 
 @api_view(["POST"])
 def add_mymenu(request):
@@ -79,6 +98,7 @@ def add_mymenu(request):
     menu = get_object_or_404(Menu, menu_name=menu_name)
     request.user.my_menu.add(menu)
     return Response(status.HTTP_204_NO_CONTENT)
+
 
 @api_view(["POST"])
 def add_mystore(request):
