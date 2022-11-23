@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Restaurant, TypeCategory, LocationCategory
+from import_export.admin import ExportActionModelAdmin, ImportExportMixin, ImportMixin
 
 @admin.register(TypeCategory)
 class TypeCategoryAdmin(admin.ModelAdmin):
@@ -10,5 +11,5 @@ class LocationCategoryAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(Restaurant)
-class RestaurantAdmin(admin.ModelAdmin):
+class RestaurantAdmin(ImportExportMixin, admin.ModelAdmin):
     pass
