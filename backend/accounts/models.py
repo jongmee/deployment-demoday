@@ -13,5 +13,5 @@ class User(AbstractUser): # username, password, email 은 기본 제공됨
         validators=[RegexValidator(r"^010-\d{4}-\d{4}$")],
     )
     nickname = models.CharField(blank = True, max_length=20)
-    my_store = models.ManyToManyField(Restaurant, null=True, blank=True)
-    my_menu = models.ManyToManyField(Menu, null=True, blank=True)
+    my_store = models.ManyToManyField(Restaurant, blank=True)
+    my_menu = models.ManyToManyField(Menu,  blank=True)

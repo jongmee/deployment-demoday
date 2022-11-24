@@ -14,7 +14,7 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.store_name
 
-    store_name = models.CharField(max_length=100)
+    store_name = models.CharField(max_length=100, primary_key=True)
     location = models.CharField(max_length=500)
     type = models.ForeignKey(TypeCategory, on_delete=models.CASCADE)
     location_type = models.ForeignKey(LocationCategory, on_delete=models.CASCADE)
