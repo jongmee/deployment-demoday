@@ -10,7 +10,7 @@ urlpatterns = [
     path("login/",views.LoginView.as_view()),
     path("mystore/", views.add_mystore),
     path("delete-mystore/", views.delete_mystore),
-    path("delete-menu/", views.delete_mymenu),
+    path("delete-mymenu/", views.delete_mymenu),
     path("mymenu/", views.add_mymenu),
     path("show-mystore/", views.show_mystore),
     path("show-mymenu/", views.show_mymenu),
