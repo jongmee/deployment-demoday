@@ -1,5 +1,5 @@
 -r common.txt
 
-django-storages[azure]
+whitenoise
 gunicorn
-psycopg2-binary
+django-environ 
