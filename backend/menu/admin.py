@@ -4,6 +4,7 @@ from import_export.admin import ExportActionModelAdmin, ImportExportMixin, Impor
 
 @admin.register(Menu)
 class MenuAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ('id', 'menu_name', 'menu_price', 'restaurant')
     pass
 
 
