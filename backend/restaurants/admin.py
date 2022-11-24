@@ -13,4 +13,5 @@ class LocationCategoryAdmin(admin.ModelAdmin):
 @admin.register(Restaurant)
 class RestaurantAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ('id', 'store_name', 'type', 'location_type')
+    
     pass
