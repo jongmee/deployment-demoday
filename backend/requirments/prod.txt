@@ -1,5 +1,0 @@
--r common.txt
-
-whitenoise
-gunicorn
-django-environ 
