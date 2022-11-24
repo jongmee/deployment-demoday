@@ -13,5 +13,9 @@ class LocationCategoryAdmin(admin.ModelAdmin):
 @admin.register(Restaurant)
 class RestaurantAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ('id', 'store_name', 'type', 'location_type')
+<<<<<<< Updated upstream
     
+=======
+    list_display_links = ('id', 'store_name')
+>>>>>>> Stashed changes
     pass
