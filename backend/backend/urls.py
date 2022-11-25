@@ -10,5 +10,4 @@ urlpatterns = [
     path('accounts/', include("accounts.urls")),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) # static은 list를 반환
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) # static은 list를 반환
